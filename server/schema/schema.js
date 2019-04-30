@@ -66,8 +66,8 @@ const Mutation = new GraphQLObjectType({
         addAuthor:{
             type:AuthorType,
             args:{
-                name: { type: GraphQLString},
-                age: {type: GraphQLInt}
+                name: { type: new GraphQLNonNull(GraphQLString)},
+                age: {type: new GraphQLNonNull(GraphQLInt)}
             },
             resolve(parent, args){
                 let author = new Author({
@@ -102,8 +102,7 @@ const RootQuery = new GraphQLObjectType({
         book:{type:BookType,
             args:{id:{type:GraphQLID}},// GraphQLID then we cna pass id as string or number, if we mention as GrapghQlString then we should pass only string
             resolve(parent,args){
-                //return _.find(books,{id:args.id})
-                //args.id
+                //return Book.findById(args.id)                
                 // code to get data from db / other source
             }
         },
@@ -111,19 +110,19 @@ const RootQuery = new GraphQLObjectType({
             type:AuthorType,
             args:{id:{type:GraphQLID}},
             resolve(parent, args){
-                //return _.find(authors,{id:args.id})
+                return Author.findById(args.id)
             }
         },
         books:{
             type: new GraphQLList(BookType),
             resolve(parent, args){
-                return books;
+                return Book.find({});
             }            
         },
         authors:{
             type:new GraphQLList(AuthorType),
             resolve(parent, args){
-                return authors
+                return Author.find({})
             }
         }
     }
