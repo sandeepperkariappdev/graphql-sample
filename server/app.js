@@ -1,7 +1,12 @@
 const express = require('express')
 const graphqlHTTP = require('express-graphql');
 const schema = require('./schema/schema.js');
+const mongoose = require('mongoose');
 
+mongoose.connect('mongodb://gqlsampleapp:sa123456@ds147890.mlab.com:47890/gql-ninja')
+mongoose.connection.once('open', ()=>{
+    console.log("connected to database");
+});
 
 const app = express();
 
